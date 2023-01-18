@@ -1,45 +1,58 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juykang <juykang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 01:05:09 by juykang           #+#    #+#             */
-/*   Updated: 2023/01/18 16:51:42 by juykang          ###   ########seoul.kr  */
+/*   Created: 2023/01/18 16:47:25 by juykang           #+#    #+#             */
+/*   Updated: 2023/01/18 16:51:14 by juykang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*new_token(void)
+t_list	*new_node(void)
 {
-	t_token	*res;
+	t_list	*res;
 
-	res = (t_token *)malloc(sizeof(t_token));
+	res = (t_list *)malloc(sizeof(t_list));
 	if (!res)
 		return (NULL);
-	res->type = 0;
-	res->str = NULL;
+	res->len = 0;
+	res->c = '\0';
 	res->next = NULL;
 	return (res);
 }
 
-t_token	*ft_tokenlast(t_token *token)
+t_list	*ft_lstlast(t_list *lst)
 {
-	if (!token)
+	if (!lst)
 		return (NULL);
-	while (token->next != NULL)
-		token = token->next;
-	return (token);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
 
-void	ft_lstadd_token(t_token **lst, t_token *new)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	if (!lst)
 		return ;
-	if (!*lst)
+	if (!(*lst))
 		*lst = new;
 	else
-		ft_tokenlast(*lst)->next = new;
+		ft_lstlast(*lst)->next = new;
+}
+
+void	destroy_list(t_list **node_head)
+{
+	t_list	*tmp;
+
+	tmp = (*node_head);
+	while ((*node_head))
+	{
+		(*node_head) = (*node_head)->next;
+		free(tmp);
+		tmp = (*node_head);
+	}
 }

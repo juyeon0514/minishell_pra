@@ -6,7 +6,7 @@
 /*   By: juykang <juykang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 13:53:53 by juykang           #+#    #+#             */
-/*   Updated: 2023/01/18 15:37:20 by juykang          ###   ########seoul.kr  */
+/*   Updated: 2023/01/18 16:58:16 by juykang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ int	type_check(char c)
 	return (type);
 }
 
+int	type_make(char *res, int len)
+{
+	int	i;
+	int	type_res;
+
+	i = 0;
+	if (res[i] == T_REDIR_IN && res[i + 1] == T_REDIR_IN)
+		type_res = T_DLESS;
+	else if (res[i] == T_REDIR_OUT && res[i + 1] == T_REDIR_OUT)
+		type_res = T_DGREAT;
+	return (type_res);
+}
+
 t_token	*do_tokenize(t_list *node_head, int len)
 {
 	t_token	*res;
@@ -40,7 +53,7 @@ t_token	*do_tokenize(t_list *node_head, int len)
 	int		i;
 
 	res = new_token();
-	value = malloc(sizeof(len + 1));
+	value = malloc((len + 1));
 	if (!value)
 		return (NULL);
 	i = 0;
@@ -52,7 +65,10 @@ t_token	*do_tokenize(t_list *node_head, int len)
 	}
 	value[i] = '\0';
 	res->str = value;
-	res->type = type_check(value[0]);
+	res->type = type_make(value, len);
+	if (res->type == T_NON)
+		return (NULL);
+	free(value);
 	return (res);
 }
 
@@ -88,7 +104,8 @@ void	set_token(char	*line, t_token **token_head)
 		{
 			token = new_token();
 			token = do_tokenize(node_head->next, len);
-			ft_lstadd_token(token_head, token);
+			if (!token)
+				ft_lstadd_token(token_head, token);
 			destroy_list(&node_head);
 			node_head = new_node();
 			len = 0;

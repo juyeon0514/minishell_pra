@@ -6,7 +6,7 @@
 /*   By: juykang <juykang@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 14:30:14 by juykang           #+#    #+#             */
-/*   Updated: 2023/01/18 13:48:56 by juykang          ###   ########seoul.kr  */
+/*   Updated: 2023/01/18 16:57:25 by juykang          ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,9 @@ t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	destroy_list(t_list **node_head);
 void	ft_lstadd_token(t_token **lst, t_token *new);
+t_list	*new_node(void);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+void	destroy_list(t_list **node_head);
+
 #endif
